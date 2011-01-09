@@ -2,7 +2,7 @@ Gem::Specification.new do |s|
   s.name             = "html_truncator"
   s.version          = "0.1.0"
   s.date             = "2011-01-09"
-  s.homepage         = "http://github.com/nono/html_truncator"
+  s.homepage         = "http://github.com/nono/HTML-Truncator"
   s.authors          = "Bruno Michel"
   s.email            = "bmichel@menfin.info"
   s.description      = "Wants to truncate an HTML string properly? This gem is for you."
