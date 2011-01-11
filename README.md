@@ -63,10 +63,10 @@ Rails has a `truncate` helper, but as the doc says:
 
 I know there are some Ruby code to truncate HTML, like:
 
-* https://github.com/hgimenez/truncate_html
-* https://gist.github.com/101410
-* http://henrik.nyh.se/2008/01/rails-truncate-html-helper
-* http://blog.madebydna.com/all/code/2010/06/04/ruby-helper-to-cleanly-truncate-html.html
+* [https://github.com/hgimenez/truncate_html](https://github.com/hgimenez/truncate_html)
+* [https://gist.github.com/101410](https://gist.github.com/101410)
+* [http://henrik.nyh.se/2008/01/rails-truncate-html-helper](http://henrik.nyh.se/2008/01/rails-truncate-html-helper)
+* [http://blog.madebydna.com/all/code/2010/06/04/ruby-helper-to-cleanly-truncate-html.html](http://blog.madebydna.com/all/code/2010/06/04/ruby-helper-to-cleanly-truncate-html.html)
 
 But I'm not pleased with these solutions: they are either based on regexp for
 parsing the content (too fragile), they don't put the ellipsis where expected,
