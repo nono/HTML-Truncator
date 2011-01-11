@@ -33,10 +33,6 @@ class Nokogiri::XML::Node
     end
     [inner, remaining]
   end
-
-  def nb_words
-    inner_text.split.length
-  end
 end
 
 class Nokogiri::XML::Text
