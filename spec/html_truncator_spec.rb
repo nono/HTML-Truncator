@@ -7,7 +7,7 @@ require "html_truncator"
 describe HTML_Truncator do
   let(:short_text) { "<p>Foo <b>Bar</b> Baz</p>" }
   let(:long_text)  { "<p>Foo " +  ("<b>Bar Baz</b> " * 100) + "Quux</p>" }
-  let(:list_text)  { "<p>Foo:</p><ul>" +  ("<li>Bar Baz</li> " * 100) + "</ul>" }
+  let(:list_text)  { "<p>Foo:</p><ul>" +  ("<li>Bar Baz</li>\n" * 100) + "</ul>" }
 
   it "should not modify short text" do
     HTML_Truncator.truncate(short_text, 10).should == short_text
@@ -32,10 +32,10 @@ describe HTML_Truncator do
   end
 
   it "should truncate long text" do
-    HTML_Truncator.truncate(long_text, 3, "...").should == "<p>Foo <b>Bar Baz</b> ...</p>"
+    HTML_Truncator.truncate(long_text, 3, "...").should == "<p>Foo <b>Bar Baz</b>...</p>"
     HTML_Truncator.truncate(long_text, 4, "...").should == "<p>Foo <b>Bar Baz</b> <b>Bar</b>...</p>"
-    HTML_Truncator.truncate(list_text, 3, "...").should == "<p>Foo:</p><ul><li>Bar Baz</li> <li>...</li></ul>"
-    HTML_Truncator.truncate(list_text, 4, "...").should == "<p>Foo:</p><ul><li>Bar Baz</li> <li>Bar...</li></ul>"
+    HTML_Truncator.truncate(list_text, 3, "...").should == "<p>Foo:</p><ul><li>Bar Baz</li>\n<li>...</li>\n</ul>"
+    HTML_Truncator.truncate(list_text, 4, "...").should == "<p>Foo:</p><ul><li>Bar Baz</li>\n<li>Bar...</li></ul>"
   end
 
   it "should be possible to truncate with HTML in the ellipsis" do

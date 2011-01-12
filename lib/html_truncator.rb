@@ -17,27 +17,29 @@ end
 
 class Nokogiri::XML::Node
   def truncate(max_words, ellipsis)
-    inner, remaining, ellipsed = inner_truncate(max_words, ellipsis)
+    return ["", 1, ellipsis] if max_words == 0 && !ellipsable?
+    inner, remaining, ellipsis = inner_truncate(max_words, ellipsis)
     children.remove
     add_child Nokogiri::HTML::DocumentFragment.parse(inner)
-    [to_xml, max_words - remaining, ellipsed]
+    [to_xml(:indent => 0), max_words - remaining, ellipsis]
   end
 
   def inner_truncate(max_words, ellipsis)
-    inner, remaining, ellipsed = "", max_words, false
+    inner, remaining = "", max_words
     self.children.each do |node|
-      txt, nb, ellipsed = node.truncate(remaining, ellipsis)
+      txt, nb, ellipsis = node.truncate(remaining, ellipsis)
       remaining -= nb
-      inner += txt if node.text? || node.ellipsable? || node.content.split.length != 0
       if remaining < 0
-        if !ellipsed && ellipsable?
+        inner += txt
+        if ellipsable?
           inner += ellipsis
-          ellipsed = true
+          ellipsis = ""
         end
         break
       end
+      inner += txt
     end
-    [inner, remaining, ellipsed]
+    [inner, remaining, ellipsis]
   end
 
   def ellipsable?
@@ -49,7 +51,7 @@ class Nokogiri::XML::Text
   def truncate(max_words, ellipsis)
     words    = content.split
     nb_words = words.length
-    return [to_xhtml, nb_words, false] if nb_words <= max_words
-    [words.slice(0, max_words).join(' '), nb_words, false]
+    return [to_xhtml, nb_words, ellipsis] if nb_words <= max_words && max_words > 0
+    [words.slice(0, max_words).join(' '), nb_words, ellipsis]
   end
 end
