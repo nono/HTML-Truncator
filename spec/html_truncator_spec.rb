@@ -54,4 +54,19 @@ describe HTML_Truncator do
     HTML_Truncator.truncate("<p>foo bar</p><pre>foo bar</pre>plop", 3, "...").should == "<p>foo bar</p><pre>foo</pre>..."
     HTML_Truncator.truncate("<p>Foo <b>Bar Baz</b> plop<b>Foo Bar</b></p>", 3, "...").should == "<p>Foo <b>Bar Baz</b>...</p>"
   end
+
+  it "should consider <p> as an element that can contains the ellipsis" do
+    HTML_Truncator.ellipsable_tags.should include("p")
+  end
+
+  it "should be possible to mark a tag as ellipsable" do
+    HTML_Truncator.ellipsable_tags << "blockquote"
+    HTML_Truncator.truncate("<blockquote>Foo bar baz quux</blockquote>", 3, "...").should == "<blockquote>Foo bar baz...</blockquote>"
+  end
+
+  it "should not bug on deep nested tags" do
+    txt = "<article><ul><li>Foo Bar</li><li><b><u><s>baz</s> quux</u></b></li></ul></article>"
+    truncated = HTML_Truncator.truncate(txt, 3, "...").gsub("\n", "")
+    truncated.should == "<article><ul><li>Foo Bar</li><li><b><u><s>baz</s></u></b>...</li></ul></article>"
+  end
 end

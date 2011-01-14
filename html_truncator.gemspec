@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name             = "html_truncator"
-  s.version          = "0.1.1"
-  s.date             = "2011-01-12"
+  s.version          = "0.1.2"
+  s.date             = "2011-01-14"
   s.homepage         = "http://github.com/nono/HTML-Truncator"
   s.authors          = "Bruno Michel"
   s.email            = "bmichel@menfin.info"

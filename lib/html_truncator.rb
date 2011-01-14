@@ -1,4 +1,5 @@
 require "nokogiri"
+require "set"
 
 
 class HTML_Truncator
@@ -6,6 +7,11 @@ class HTML_Truncator
     doc = Nokogiri::HTML::DocumentFragment.parse(text)
     doc.truncate(max_words, ellipsis).first
   end
+
+  class <<self
+    attr_accessor :ellipsable_tags
+  end
+  self.ellipsable_tags = Set.new(%w(p ol ul li div header article nav section footer aside dd dt dl))
 end
 
 
@@ -29,21 +35,19 @@ class Nokogiri::XML::Node
     self.children.each do |node|
       txt, nb, ellipsis = node.truncate(remaining, ellipsis)
       remaining -= nb
-      if remaining < 0
-        inner += txt
-        if ellipsable?
-          inner += ellipsis
-          ellipsis = ""
-        end
-        break
-      end
       inner += txt
+      next if remaining >= 0
+      if ellipsable?
+        inner += ellipsis
+        ellipsis = ""
+      end
+      break
     end
     [inner, remaining, ellipsis]
   end
 
   def ellipsable?
-    %w(p ol ul li div header article nav section footer aside dd dt dl).include? name
+    HTML_Truncator.ellipsable_tags.include? name
   end
 end
 
