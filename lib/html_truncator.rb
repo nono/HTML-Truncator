@@ -61,17 +61,17 @@ class Nokogiri::XML::Text
 end
 
 class String
-  def truncate(max_words, ellipsis=nil)
+  def html_truncate(max_words, ellipsis=nil)
     truncated_string = HTML_Truncator.truncate(self, max_words, ellipsis)
     if truncated_string != self
-      truncated_string.define_singleton_method(:truncated?) do
+      truncated_string.define_singleton_method(:html_truncated?) do
         true
       end
     end
     truncated_string
   end
 
-  def truncated?
+  def html_truncated?
     false
   end
 end
