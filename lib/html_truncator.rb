@@ -61,8 +61,8 @@ class Nokogiri::XML::Text
 end
 
 class String
-  def html_truncate(max_words, ellipsis=nil)
-    truncated_string = HTML_Truncator.truncate(self, max_words, ellipsis)
+  def html_truncate(*args)
+    truncated_string = HTML_Truncator.truncate(self, *args)
     if truncated_string != self
       truncated_string.define_singleton_method(:html_truncated?) do
         true
