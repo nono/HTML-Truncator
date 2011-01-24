@@ -59,3 +59,19 @@ class Nokogiri::XML::Text
     [words.slice(0, max_words).join(' '), nb_words, ellipsis]
   end
 end
+
+class String
+  def truncate(max_words, ellipsis=nil)
+    truncated_string = HTML_Truncator.truncate(self, max_words, ellipsis)
+    if truncated_string != self
+      truncated_string.define_singleton_method(:truncated?) do
+        true
+      end
+    end
+    truncated_string
+  end
+
+  def truncated?
+    false
+  end
+end
