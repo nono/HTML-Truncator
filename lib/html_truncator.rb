@@ -63,7 +63,7 @@ end
 class String
   def html_truncate(*args)
     truncated_string = HTML_Truncator.truncate(self, *args)
-    if truncated_string != self
+    if truncated_string != HTML_Truncator.truncate(self, self.length + 100)
       truncated_string.define_singleton_method(:html_truncated?) do
         true
       end
