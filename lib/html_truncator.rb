@@ -27,7 +27,7 @@ class Nokogiri::XML::Node
     inner, remaining, ellipsis = inner_truncate(max_words, ellipsis)
     children.remove
     add_child Nokogiri::HTML::DocumentFragment.parse(inner)
-    [to_xml(:indent => 0), max_words - remaining, ellipsis]
+    [to_html(:indent => 0), max_words - remaining, ellipsis]
   end
 
   def inner_truncate(max_words, ellipsis)
