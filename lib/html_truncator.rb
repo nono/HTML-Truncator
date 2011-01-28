@@ -5,7 +5,7 @@ require "set"
 
 
 class HTML_Truncator
-  DEFAULT_OPTIONS = { :ellipsis => "...", :length_in_chars => false }
+  DEFAULT_OPTIONS = { :ellipsis => "…", :length_in_chars => false }
 
   def self.truncate(text, max, opts={})
     return truncate(text, max, :ellipsis => opts) if String === opts
@@ -33,7 +33,7 @@ class Nokogiri::XML::Node
     inner, remaining, opts = inner_truncate(max, opts)
     children.remove
     add_child Nokogiri::HTML::DocumentFragment.parse(inner)
-    [to_xml(:indent => 0), max - remaining, opts]
+    [to_html(:indent => 0), max - remaining, opts]
   end
 
   def inner_truncate(max, opts)

@@ -39,8 +39,8 @@ describe HTML_Truncator do
   it "should truncate long text" do
     HTML_Truncator.truncate(long_text, 3, :ellipsis => "...").should == "<p>Foo <b>Bar Baz</b>...</p>"
     HTML_Truncator.truncate(long_text, 4, :ellipsis => "...").should == "<p>Foo <b>Bar Baz</b> <b>Bar</b>...</p>"
-    HTML_Truncator.truncate(list_text, 3, :ellipsis => "...").should == "<p>Foo:</p><ul><li>Bar Baz</li>\n<li>...</li>\n</ul>"
-    HTML_Truncator.truncate(list_text, 4, :ellipsis => "...").should == "<p>Foo:</p><ul><li>Bar Baz</li>\n<li>Bar...</li></ul>"
+    HTML_Truncator.truncate(list_text, 3, :ellipsis => "...").should == "<p>Foo:</p><ul>\n<li>Bar Baz</li>\n<li>...</li>\n</ul>"
+    HTML_Truncator.truncate(list_text, 4, :ellipsis => "...").should == "<p>Foo:</p><ul>\n<li>Bar Baz</li>\n<li>Bar...</li>\n</ul>"
   end
 
   it "should be possible to truncate with HTML in the ellipsis" do
@@ -73,6 +73,10 @@ describe HTML_Truncator do
     txt = "<article><ul><li>Foo Bar</li><li><b><u><s>baz</s> quux</u></b></li></ul></article>"
     truncated = HTML_Truncator.truncate(txt, 3, :ellipsis => "...").gsub("\n", "")
     truncated.should == "<article><ul><li>Foo Bar</li><li><b><u><s>baz</s></u></b>...</li></ul></article>"
+  end
+
+  it "uses … as the default ellipsis" do
+    HTML_Truncator.truncate(long_text, 3).should == "<p>Foo <b>Bar Baz</b>…</p>"
   end
 
   it "can truncate with a characters length" do

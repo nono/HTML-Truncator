@@ -20,13 +20,13 @@ Then you can use it in your code:
 
     require "html_truncator"
 	HTML_Truncator.truncate("<p>Lorem ipsum dolor sit amet.</p>", 3)
-	# => "<p>Lorem ipsum dolor...</p>"
+	# => "<p>Lorem ipsum dolor…</p>"
 
 The HTML_Truncator class has only one method, `truncate`, with 3 arguments:
 
 * the HTML-formatted string to truncate
 * the number of words to keep (real words, tags and attributes aren't count)
-* the ellipsis (optional, '...' by default).
+* the ellipsis (optional, '…' by default).
 
 And an attribute, `ellipsable_tags`, which lists the tags that can contain the ellipsis
 (by default: p ol ul li div header article nav section footer aside dd dt dl).
@@ -38,7 +38,7 @@ Examples
 A simple example:
 
 	HTML_Truncator.truncate("<p>Lorem ipsum dolor sit amet.</p>", 3)
-	# => "<p>Lorem ipsum dolor...</p>"
+	# => "<p>Lorem ipsum dolor…</p>"
 
 If the text is too short to be truncated, it won't be modified:
 
@@ -58,13 +58,13 @@ And even have HTML in the ellipsis:
 The ellipsis is put at the right place, inside `<p>`, but not `<i>`:
 
     HTML_Truncator.truncate("<p><i>Lorem ipsum dolor sit amet.</i></p>", 3)
-    # => "<p><i>Lorem ipsum dolor</i>...</p>"
+    # => "<p><i>Lorem ipsum dolor</i>…</p>"
 
 You can indicate that a tag can contain the ellipsis but adding it to the ellipsable_tags:
 
     HTML_Truncator.ellipsable_tags << "blockquote"
     HTML_Truncator.truncate("<blockquote>Lorem ipsum dolor sit amet.</blockquote>", 3)
-    # => "<blockquote>Lorem ipsum dolor...</blockquote>"
+    # => "<blockquote>Lorem ipsum dolor…</blockquote>"
 
 
 Alternatives
