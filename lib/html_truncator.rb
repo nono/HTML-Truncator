@@ -1,11 +1,17 @@
+# encoding: utf-8
+
 require "nokogiri"
 require "set"
 
 
 class HTML_Truncator
-  def self.truncate(text, max_words, ellipsis="...")
+  DEFAULT_OPTIONS = { :ellipsis => "...", :length_in_chars => false }
+
+  def self.truncate(text, max, opts={})
+    return truncate(text, max, :ellipsis => opts) if String === opts
+    opts = DEFAULT_OPTIONS.merge(opts)
     doc = Nokogiri::HTML::DocumentFragment.parse(text)
-    doc.truncate(max_words, ellipsis).first
+    doc.truncate(max, opts).first
   end
 
   class <<self
@@ -22,28 +28,28 @@ class Nokogiri::HTML::DocumentFragment
 end
 
 class Nokogiri::XML::Node
-  def truncate(max_words, ellipsis)
-    return ["", 1, ellipsis] if max_words == 0 && !ellipsable?
-    inner, remaining, ellipsis = inner_truncate(max_words, ellipsis)
+  def truncate(max, opts)
+    return ["", 1, opts] if max == 0 && !ellipsable?
+    inner, remaining, opts = inner_truncate(max, opts)
     children.remove
     add_child Nokogiri::HTML::DocumentFragment.parse(inner)
-    [to_xml(:indent => 0), max_words - remaining, ellipsis]
+    [to_xml(:indent => 0), max - remaining, opts]
   end
 
-  def inner_truncate(max_words, ellipsis)
-    inner, remaining = "", max_words
+  def inner_truncate(max, opts)
+    inner, remaining = "", max
     self.children.each do |node|
-      txt, nb, ellipsis = node.truncate(remaining, ellipsis)
+      txt, nb, opts = node.truncate(remaining, opts)
       remaining -= nb
       inner += txt
       next if remaining >= 0
       if ellipsable?
-        inner += ellipsis
-        ellipsis = ""
+        inner += opts[:ellipsis]
+        opts[:ellipsis] = ""
       end
       break
     end
-    [inner, remaining, ellipsis]
+    [inner, remaining, opts]
   end
 
   def ellipsable?
@@ -52,10 +58,16 @@ class Nokogiri::XML::Node
 end
 
 class Nokogiri::XML::Text
-  def truncate(max_words, ellipsis)
-    words    = content.split
-    nb_words = words.length
-    return [to_xhtml, nb_words, ellipsis] if nb_words <= max_words && max_words > 0
-    [words.slice(0, max_words).join(' '), nb_words, ellipsis]
+   def truncate(max, opts)
+     if opts[:length_in_chars]
+       count = content.length
+       return [to_xhtml, count, opts] if count <= max && max > 0
+       [content.slice(0, max), count, opts]
+     else
+       words = content.split
+       count = words.length
+       return [to_xhtml, count, opts] if count <= max && max > 0
+       [words.slice(0, max).join(' '), count, opts]
+     end
   end
 end
