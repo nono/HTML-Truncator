@@ -11,7 +11,9 @@ class HTML_Truncator
     return truncate(text, max, :ellipsis => opts) if String === opts
     opts = DEFAULT_OPTIONS.merge(opts)
     doc = Nokogiri::HTML::DocumentFragment.parse(text)
-    doc.truncate(max, opts).first
+    str, _, opts = doc.truncate(max, opts)
+    eval "class <<str; def html_truncated?; #{opts[:was_truncated]} end end"
+    str
   end
 
   class <<self
@@ -46,6 +48,7 @@ class Nokogiri::XML::Node
       if ellipsable?
         inner += opts[:ellipsis]
         opts[:ellipsis] = ""
+        opts[:was_truncated] = true
       end
       break
     end

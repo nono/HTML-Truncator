@@ -83,4 +83,9 @@ describe HTML_Truncator do
     HTML_Truncator.truncate(long_text, 11, :ellipsis => "...", :length_in_chars => true).should == "<p>Foo <b>Bar Baz</b>...</p>"
     HTML_Truncator.truncate(long_text, 15, :ellipsis => "...", :length_in_chars => true).should == "<p>Foo <b>Bar Baz</b> <b>Bar</b>...</p>"
   end
+
+  it "says if a string was truncated" do
+    HTML_Truncator.truncate(short_text, 10).should_not be_html_truncated
+    HTML_Truncator.truncate(long_text, 10).should be_html_truncated
+  end
 end
