@@ -63,11 +63,11 @@ end
 class Nokogiri::XML::Text
    def truncate(max, opts)
      if opts[:length_in_chars]
-       count = content.length
+       count = to_xhtml.length
        return [to_xhtml, count, opts] if count <= max && max > 0
        [content.slice(0, max), count, opts]
      else
-       words = content.split
+       words = to_xhtml.split
        count = words.length
        return [to_xhtml, count, opts] if count <= max && max > 0
        [words.slice(0, max).join(' '), count, opts]

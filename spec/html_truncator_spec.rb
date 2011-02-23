@@ -88,4 +88,16 @@ describe HTML_Truncator do
     HTML_Truncator.truncate(short_text, 10).should_not be_html_truncated
     HTML_Truncator.truncate(long_text, 10).should be_html_truncated
   end
+
+  it "should not unescape html entities" do
+    txt = <<EOS
+<p>Dans le wiki, le \"titre\" <strong>Log des modifications</strong> s'étale sur toute la largeur de l'écran et la barre de saisie dépasse allégrement la taille dudit écran.<br />
+Je pense qu'ils devraient être en fait même sur la même ligne… Sans doute un problème de <em>float</em> ou de <em>display</em>.</p>
+
+<p>Dans les journaux (et sans doute partout ailleurs) <strong>Sujet du commentaire</strong> aussi s'étale trop.</p>
+
+<p>Les paragraphes ne sont pas séparés. Il faut rajouter des <em>margin</em> à &lt;p&gt;…&lt;/p&gt;, sinon quoi les sauts de ligne et retours à la ligne sont indistinguables.</p>
+EOS
+    HTML_Truncator.truncate(txt, 80).should =~ /&lt;p&gt;…&lt;\/p&gt;/
+  end
 end
