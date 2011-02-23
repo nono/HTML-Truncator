@@ -67,10 +67,10 @@ class Nokogiri::XML::Text
        return [to_xhtml, count, opts] if count <= max && max > 0
        [content.slice(0, max), count, opts]
      else
-       words = to_xhtml.split
+       words = to_xhtml.scan(/\s*\S+/)
        count = words.length
        return [to_xhtml, count, opts] if count <= max && max > 0
-       [words.slice(0, max).join(' '), count, opts]
+       [words.slice(0, max).join, count, opts]
      end
   end
 end

@@ -89,7 +89,7 @@ describe HTML_Truncator do
     HTML_Truncator.truncate(long_text, 10).should be_html_truncated
   end
 
-  it "should not unescape html entities" do
+  it "doesn't unescape html entities" do
     txt = <<EOS
 <p>Dans le wiki, le \"titre\" <strong>Log des modifications</strong> s'étale sur toute la largeur de l'écran et la barre de saisie dépasse allégrement la taille dudit écran.<br />
 Je pense qu'ils devraient être en fait même sur la même ligne… Sans doute un problème de <em>float</em> ou de <em>display</em>.</p>
@@ -99,5 +99,13 @@ Je pense qu'ils devraient être en fait même sur la même ligne… Sans doute u
 <p>Les paragraphes ne sont pas séparés. Il faut rajouter des <em>margin</em> à &lt;p&gt;…&lt;/p&gt;, sinon quoi les sauts de ligne et retours à la ligne sont indistinguables.</p>
 EOS
     HTML_Truncator.truncate(txt, 80).should =~ /&lt;p&gt;…&lt;\/p&gt;/
+  end
+
+  it "keeps spaces after links" do
+    txt = <<EOS
+<p>Depuis 1995 l'humanité est véritablement entrée dans une nouvelle ère. Alors que, depuis l'aube des temps, nous ne savions pas si d'autres planètes existaient autour des étoiles lointaines, voilà que soudain la première d'entre elle était découverte en orbite autour de <a href=\"http://fr.wikipedia.org/wiki/51_Pegasi\">51 Pegasi</a>.<br />
+Après 2 500 ans de spéculations nous avions enfin une réponse ! Six siècles après la condamnation à mort de <a href=\"http://fr.wikipedia.org/wiki/Giordano_Bruno\">Giordano Bruno</a> nous savions enfin qu'il avait eu raison ! <a href=\"http://fr.wikipedia.org/wiki/Exoplan%C3%A8te\">Les exoplanètes</a> existent bel et bien et notre système solaire n'est pas une exception cosmique.</p>
+EOS
+    HTML_Truncator.truncate(txt, 80).should =~ /Les exoplanètes<\/a> existent/
   end
 end
