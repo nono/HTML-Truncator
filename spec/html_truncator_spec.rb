@@ -84,6 +84,17 @@ describe HTML_Truncator do
     HTML_Truncator.truncate(long_text, 15, :ellipsis => "...", :length_in_chars => true).should == "<p>Foo <b>Bar Baz</b> <b>Bar</b>...</p>"
   end
 
+  it "can truncate with a characters length to the last word before the limit was reached" do
+    HTML_Truncator.truncate(long_text, 5, :ellipsis => '...', :length_in_chars => true).should == "<p>Foo...</p>"
+    HTML_Truncator.truncate(long_text, 10, :ellipsis => '...', :length_in_chars => true).should == "<p>Foo <b>Bar</b>...</p>"
+    HTML_Truncator.truncate(long_text, 14, :ellipsis => '...', :length_in_chars => true).should == "<p>Foo <b>Bar Baz</b>...</p>"
+  end
+
+  it "should always truncate at characters length if only a single word is present or length is shorter than the first word" do
+    HTML_Truncator.truncate(long_text, 1, :ellipsis => '...', :length_in_chars => true).should == "<p>F...</p>"
+    HTML_Truncator.truncate("<p>Honorificabilitudinitatibus</p>", 5, :ellipsis => '...', :length_in_chars => true).should == "<p>Honor...</p>"
+  end
+
   it "says if a string was truncated" do
     HTML_Truncator.truncate(short_text, 10).should_not be_html_truncated
     HTML_Truncator.truncate(long_text, 10).should be_html_truncated
