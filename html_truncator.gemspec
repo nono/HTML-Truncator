@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.description      = "Wants to truncate an HTML string properly? This gem is for you."
   s.summary          = "Wants to truncate an HTML string properly? This gem is for you."
   s.extra_rdoc_files = %w(README.md)
-  s.files            = Dir["MIT-LICENSE", "README.md", "Gemfile", "lib/**/*.rb"]
+  s.files            = Dir["MIT-LICENSE", "README.md", "Gemfile", "lib/**/*.rb", "init.rb"]
   s.require_paths    = ["lib"]
   s.rubygems_version = %q{1.3.7}
   s.add_dependency "nokogiri", "~>1.4"
