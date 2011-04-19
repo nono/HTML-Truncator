@@ -22,7 +22,6 @@ class HTML_Truncator
   self.ellipsable_tags = Set.new(%w(p ol ul li div header article nav section footer aside dd dt dl))
 end
 
-
 class Nokogiri::HTML::DocumentFragment
   def ellipsable?
     true
@@ -33,6 +32,7 @@ class Nokogiri::XML::Node
   def truncate(max, opts)
     return ["", 1, opts] if max == 0 && !ellipsable?
     inner, remaining, opts = inner_truncate(max, opts)
+    return ["", max - remaining, opts] if inner.empty?
     children.remove
     add_child Nokogiri::HTML::DocumentFragment.parse(inner)
     [to_html(:indent => 0), max - remaining, opts]
@@ -46,7 +46,7 @@ class Nokogiri::XML::Node
       inner += txt
       next if remaining >= 0
       if ellipsable?
-        inner += opts[:ellipsis]
+        inner = inner.rstrip + opts[:ellipsis]
         opts[:ellipsis] = ""
         opts[:was_truncated] = true
       end
@@ -61,16 +61,23 @@ class Nokogiri::XML::Node
 end
 
 class Nokogiri::XML::Text
-   def truncate(max, opts)
-     if opts[:length_in_chars]
-       count = to_xhtml.length
-       return [to_xhtml, count, opts] if count <= max && max > 0
-       [content.slice(0, max), count, opts]
-     else
-       words = to_xhtml.scan(/\s*\S+/)
-       count = words.length
-       return [to_xhtml, count, opts] if count <= max && max > 0
-       [words.slice(0, max).join, count, opts]
-     end
+  def truncate(max, opts)
+    if opts[:length_in_chars]
+      count = to_xhtml.length
+      return [to_xhtml, count, opts] if count <= max && max > 0
+      if count > max && (words = to_xhtml.scan(/\s*\S+/)).size > 1
+        result = words.inject('') do |string, word|
+          break string if string.length + word.length > max
+          string + word
+        end
+        return [result, count, opts]
+      end
+      [content.slice(0, max), count, opts]
+    else
+      words = to_xhtml.scan(/\s*\S+/)
+      count = words.length
+      return [to_xhtml, count, opts] if count <= max && max > 0
+      [words.slice(0, max).join, count, opts]
+    end
   end
 end
