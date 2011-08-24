@@ -32,7 +32,9 @@ class Nokogiri::XML::Node
   def truncate(max, opts)
     return ["", 1, opts] if max == 0 && !ellipsable?
     inner, remaining, opts = inner_truncate(max, opts)
-    return ["", max - remaining, opts] if inner.empty?
+    if inner.empty?
+      return [name == "br" ? to_html : "", max - remaining, opts]
+    end
     children.remove
     add_child Nokogiri::HTML::DocumentFragment.parse(inner)
     [to_html(:indent => 0), max - remaining, opts]

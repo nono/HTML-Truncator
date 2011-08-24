@@ -119,4 +119,16 @@ Après 2 500 ans de spéculations nous avions enfin une réponse ! Six siècles 
 EOS
     HTML_Truncator.truncate(txt, 80).should =~ /Les exoplanètes<\/a> existent/
   end
+
+  it "should preserve <br> tags" do
+    txt = <<EOS
+<p>Bonjour</p>
+<blockquote>
+On 11/06/11 11:12, JP wrote:<br />
+&gt; Nom : JP<br />
+&gt; Message : Problème<br />
+</blockquote>
+EOS
+    HTML_Truncator.truncate(txt, 10).should =~ /wrote:<br/
+  end
 end
