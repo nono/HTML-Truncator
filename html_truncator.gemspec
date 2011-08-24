@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name             = "html_truncator"
-  s.version          = "0.2.2"
+  s.version          = "0.2.3"
   s.date             = Time.now.utc.strftime("%Y-%m-%d")
   s.homepage         = "http://github.com/nono/HTML-Truncator"
   s.authors          = "Bruno Michel"
