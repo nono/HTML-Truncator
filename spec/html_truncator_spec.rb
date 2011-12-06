@@ -131,4 +131,13 @@ On 11/06/11 11:12, JP wrote:<br />
 EOS
     HTML_Truncator.truncate(txt, 10).should =~ /wrote:<br/
   end
+
+  it "should preserve <img> tags" do
+    txt = <<EOS
+<p>Bonjour</p>
+<img src="/foo.png" />
+<p>Foo bar baz</p>
+EOS
+    HTML_Truncator.truncate(txt, 2).should =~ /<img src="\/foo.png"/
+  end
 end
