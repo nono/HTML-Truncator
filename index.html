@@ -1,0 +1,179 @@
+<!doctype html>
+<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
+<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on http://github.com/jonrohan -->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen"/>
+  <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/script.js"></script>
+
+  <title>Html-truncator</title>
+  <meta name="description" content="Wants to truncate an HTML string properly? This Ruby gem is for you.">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+</head>
+
+<body>
+
+  <div class="wrapper">
+    <header>
+      <h1 class="title">Html-truncator</h1>
+    </header>
+    <div id="container">
+      <p class="tagline">Wants to truncate an HTML string properly? This Ruby gem is for you.</p>
+      <div id="main" role="main">
+        <div class="download-bar">
+        <div class="inner">
+          <a href="https://github.com/nono/HTML-Truncator/tarball/master" class="download-button tar"><span>Download</span></a>
+          <a href="https://github.com/nono/HTML-Truncator/zipball/master" class="download-button zip"><span>Download</span></a>
+          <a href="https://github.com/nono/HTML-Truncator" class="code">fork Html-truncator on GitHub</a>
+        </div>
+        <span class="blc"></span><span class="trc"></span>
+        </div>
+        <article class="markdown-body">
+          <h1>HTML Truncator</h1>
+
+<p>Wants to truncate an HTML string properly? This gem is for you.
+It's powered by <a href="http://nokogiri.org/">Nokogiri</a>!</p>
+
+<h2>How to use it</h2>
+
+<p>It's very simple. Install it with rubygems:</p>
+
+<pre><code>gem install html_truncator
+</code></pre>
+
+<p>Or, if you use bundler, add it to your <code>Gemfile</code>:</p>
+
+<pre><code>gem "html_truncator", "~&gt;0.2"
+</code></pre>
+
+<p>Then you can use it in your code:</p>
+
+<pre><code>require "html_truncator"
+HTML_Truncator.truncate("&lt;p&gt;Lorem ipsum dolor sit amet.&lt;/p&gt;", 3)
+# =&gt; "&lt;p&gt;Lorem ipsum dolor…&lt;/p&gt;"
+</code></pre>
+
+<p>The HTML_Truncator class has only one method, <code>truncate</code>, with 3 arguments:</p>
+
+<ul>
+<li>the HTML-formatted string to truncate</li>
+<li>the number of words to keep (real words, tags and attributes aren't count)</li>
+<li>some options like the ellipsis (optional, '…' by default).</li>
+</ul><p>And an attribute, <code>ellipsable_tags</code>, which lists the tags that can contain the ellipsis
+(by default: p ol ul li div header article nav section footer aside dd dt dl).</p>
+
+<h2>Examples</h2>
+
+<p>A simple example:</p>
+
+<pre><code>HTML_Truncator.truncate("&lt;p&gt;Lorem ipsum dolor sit amet.&lt;/p&gt;", 3)
+# =&gt; "&lt;p&gt;Lorem ipsum dolor…&lt;/p&gt;"
+</code></pre>
+
+<p>If the text is too short to be truncated, it won't be modified:</p>
+
+<pre><code>HTML_Truncator.truncate("&lt;p&gt;Lorem ipsum dolor sit amet.&lt;/p&gt;", 5)
+# =&gt; "&lt;p&gt;Lorem ipsum dolor sit amet.&lt;/p&gt;"
+</code></pre>
+
+<p>If you prefer, you can have the length in characters instead of words:</p>
+
+<pre><code>HTML_Truncator.truncate("&lt;p&gt;Lorem ipsum dolor sit amet.&lt;/p&gt;", 12, :length_in_chars =&gt; true)
+# =&gt; "&lt;p&gt;Lorem ipsum …&lt;/p&gt;"
+</code></pre>
+
+<p>You can customize the ellipsis:</p>
+
+<pre><code>HTML_Truncator.truncate("&lt;p&gt;Lorem ipsum dolor sit amet.&lt;/p&gt;", 3, :ellipsis =&gt; " (truncated)")
+# =&gt; "&lt;p&gt;Lorem ipsum dolor (truncated)&lt;/p&gt;"
+</code></pre>
+
+<p>And even have HTML in the ellipsis:</p>
+
+<pre><code>HTML_Truncator.truncate("&lt;p&gt;Lorem ipsum dolor sit amet.&lt;/p&gt;", 3, :ellipsis =&gt; '&lt;a href="/more-to-read"&gt;...&lt;/a&gt;')
+# =&gt; "&lt;p&gt;Lorem ipsum dolor&lt;a href="/more-to-read"&gt;...&lt;/a&gt;&lt;/p&gt;"
+</code></pre>
+
+<p>The ellipsis is put at the right place, inside <code>&lt;p&gt;</code>, but not <code>&lt;i&gt;</code>:</p>
+
+<pre><code>HTML_Truncator.truncate("&lt;p&gt;&lt;i&gt;Lorem ipsum dolor sit amet.&lt;/i&gt;&lt;/p&gt;", 3)
+# =&gt; "&lt;p&gt;&lt;i&gt;Lorem ipsum dolor&lt;/i&gt;…&lt;/p&gt;"
+</code></pre>
+
+<p>You can indicate that a tag can contain the ellipsis but adding it to the ellipsable_tags:</p>
+
+<pre><code>HTML_Truncator.ellipsable_tags &lt;&lt; "blockquote"
+HTML_Truncator.truncate("&lt;blockquote&gt;Lorem ipsum dolor sit amet.&lt;/blockquote&gt;", 3)
+# =&gt; "&lt;blockquote&gt;Lorem ipsum dolor…&lt;/blockquote&gt;"
+</code></pre>
+
+<p>You can know if a string was truncated with the <code>html_truncated?</code> method:</p>
+
+<pre><code>HTML_Truncator.truncate("&lt;p&gt;Lorem ipsum dolor sit amet.&lt;/p&gt;", 3).html_truncated?
+# =&gt; true 
+</code></pre>
+
+<h2>Alternatives</h2>
+
+<p>Rails has a <code>truncate</code> helper, but as the doc says:</p>
+
+<blockquote>
+<p>Care should be taken if text contains HTML tags or entities,
+  because truncation may produce invalid HTML (such as unbalanced or incomplete tags).</p>
+</blockquote>
+
+<p>I know there are some Ruby code to truncate HTML, like:</p>
+
+<ul>
+<li><a href="https://github.com/hgimenez/truncate_html">https://github.com/hgimenez/truncate_html</a></li>
+<li><a href="https://gist.github.com/101410">https://gist.github.com/101410</a></li>
+<li><a href="http://henrik.nyh.se/2008/01/rails-truncate-html-helper">http://henrik.nyh.se/2008/01/rails-truncate-html-helper</a></li>
+<li><a href="http://blog.madebydna.com/all/code/2010/06/04/ruby-helper-to-cleanly-truncate-html.html">http://blog.madebydna.com/all/code/2010/06/04/ruby-helper-to-cleanly-truncate-html.html</a></li>
+</ul><p>But I'm not pleased with these solutions: they are either based on regexp for
+parsing the content (too fragile), they don't put the ellipsis where expected,
+they cut words and sometimes leave empty DOM nodes. So I made my own gem ;-)</p>
+
+<h2>Issues or Suggestions</h2>
+
+<p>Found an issue or have a suggestion? Please report it on
+<a href="http://github.com/nono/HTML-Truncator/issues">Github's issue tracker</a>.</p>
+
+<p>If you wants to make a pull request, please check the specs before:</p>
+
+<pre><code>rspec spec
+</code></pre>
+
+<h2>Credits</h2>
+
+<p>Thanks to François de Metz for his awesome help!
+Thanks to <a href="https://github.com/kuroir">kuroir</a> and <a href="https://github.com/benhutton">benhutton</a> for their suggestions.</p>
+
+<p>Copyright (c) 2011 Bruno Michel <a href="mailto:bmichel@menfin.info">bmichel@menfin.info</a>, released under the MIT license</p>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="owner">
+      <p><a href="https://github.com/nono" class="avatar"><img src="https://secure.gravatar.com/avatar/52143950e2745d7321b597d2615ca90a?s=30&amp;d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-140.png" width="48" height="48"/></a> <a href="https://github.com/nono">nono</a> maintains <a href="https://github.com/nono/HTML-Truncator">Html-truncator</a></p>
+      </div>
+      <div class="creds">
+        <small>This page generated using <a href="https://pages.github.com/">GitHub Pages</a><br/>theme by <a href="http://twitter.com/jonrohan/">Jon Rohan</a></small>
+      </div>
+    </footer>
+  </div>
+  <div class="current-section">
+    <a href="#top">Scroll to top</a>
+    <a href="https://github.com/nono/HTML-Truncator/tarball/master" class="tar">tar</a><a href="https://github.com/nono/HTML-Truncator/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
+    <p class="name"></p>
+  </div>
+
+  
+</body>
+</html>
