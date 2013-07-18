@@ -31,6 +31,7 @@ end
 
 class Nokogiri::XML::Node
   def truncate(max, opts)
+    return [to_html(:indent => 0), 0, opts] if name == 'object'
     return ["", 1, opts] if max == 0 && !ellipsable?
     inner, remaining, opts = inner_truncate(max, opts)
     if inner.empty?
