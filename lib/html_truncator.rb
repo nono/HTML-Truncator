@@ -20,7 +20,7 @@ class HTML_Truncator
     attr_accessor :ellipsable_tags, :self_closing_tags
   end
   self.ellipsable_tags = Set.new(%w(p ol ul li div header article nav section footer aside dd dt dl))
-  self.self_closing_tags = Set.new(%w(br hr img))
+  self.self_closing_tags = Set.new(%w(br hr img param embed))
 end
 
 class Nokogiri::HTML::DocumentFragment
@@ -31,7 +31,6 @@ end
 
 class Nokogiri::XML::Node
   def truncate(max, opts)
-    return [to_html(:indent => 0), 0, opts] if name == 'object'
     return ["", 1, opts] if max == 0 && !ellipsable?
     inner, remaining, opts = inner_truncate(max, opts)
     if inner.empty?

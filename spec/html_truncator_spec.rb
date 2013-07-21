@@ -145,13 +145,12 @@ EOS
     txt = <<EOS
 <p>YouTube video embedded</p>
 <object width="420" height="315">
-  <param name="movie" value="//www.youtube.com/v/txqiwrbYGrs?version=3&amp;hl=en_US">
-  <param name="allowFullScreen" value="true">
-  <param name="allowscriptaccess" value="always">
-  <embed src="//www.youtube.com/v/txqiwrbYGrs?version=3&amp;hl=en_US" type="application/x-shockwave-flash" width="420" height="315" allowscriptaccess="always" allowfullscreen="true"></embed>
-</object>
+<param name="movie" value="//www.youtube.com/v/txqiwrbYGrs?version=3&amp;hl=en_US">
+<param name="allowFullScreen" value="true">
+<param name="allowscriptaccess" value="always">
+<embed src="//www.youtube.com/v/txqiwrbYGrs?version=3&amp;hl=en_US" type="application/x-shockwave-flash" width="420" height="315" allowscriptaccess="always" allowfullscreen="true"></embed></object>
 EOS
-    HTML_Truncator.truncate(txt, 10).should == txt
+    HTML_Truncator.truncate(txt, 10).should == txt.chomp
     HTML_Truncator.truncate(txt, 2).should == '<p>YouTube video…</p>'
   end
 end
