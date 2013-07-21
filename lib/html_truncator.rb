@@ -2,6 +2,7 @@
 
 require "nokogiri"
 require "set"
+require "html_truncator/version"
 
 
 class HTML_Truncator
