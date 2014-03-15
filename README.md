@@ -28,8 +28,12 @@ The HTML_Truncator class has only one method, `truncate`, with 3 arguments:
 * the number of words to keep (real words, tags and attributes aren't count)
 * some options like the ellipsis (optional, '…' by default).
 
-And an attribute, `ellipsable_tags`, which lists the tags that can contain the ellipsis
-(by default: p ol ul li div header article nav section footer aside dd dt dl).
+And two attribute:
+
+* `ellipsable_tags`, which lists the tags that can contain the ellipsis
+  (by default: p ol ul li div header article nav section footer aside dd dt dl).
+* `self_closing_tags`, with the tags to keep when empty
+  (by default: br hr img param embed).
 
 
 Examples
@@ -48,7 +52,13 @@ If the text is too short to be truncated, it won't be modified:
 If you prefer, you can have the length in characters instead of words:
 
     HTML_Truncator.truncate("<p>Lorem ipsum dolor sit amet.</p>", 12, :length_in_chars => true)
-    # => "<p>Lorem ipsum …</p>"
+    # => "<p>Lorem ipsum…</p>"
+
+It doesn't cut inside a word but goes back to the immediately preceding word
+boundary:
+
+    HTML_Truncator.truncate("<p>Lorem ipsum dolor sit amet.</p>", 10, :length_in_chars => true)
+    # => "<p>Lorem…</p>"
 
 You can customize the ellipsis:
 
@@ -74,7 +84,7 @@ You can indicate that a tag can contain the ellipsis but adding it to the ellips
 You can know if a string was truncated with the `html_truncated?` method:
 
     HTML_Truncator.truncate("<p>Lorem ipsum dolor sit amet.</p>", 3).html_truncated?
-    # => true 
+    # => true
 
 
 Alternatives
@@ -112,6 +122,10 @@ Credits
 -------
 
 Thanks to François de Metz for his awesome help!
-Thanks to [kuroir](https://github.com/kuroir) and [benhutton](https://github.com/benhutton) for their suggestions.
+Thanks to [kuroir](https://github.com/kuroir) and
+[benhutton](https://github.com/benhutton) for their suggestions.
 
-Copyright (c) 2011 Bruno Michel <bmichel@menfin.info>, released under the MIT license
+The code is released under the MIT license.
+See the MIT-LICENSE file for the full license.
+
+♡2011 by Bruno Michel. Copying is an act of love. Please copy and share.
