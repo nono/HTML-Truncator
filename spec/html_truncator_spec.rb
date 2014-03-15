@@ -5,7 +5,7 @@ require "html_truncator"
 
 
 describe HTML_Truncator do
-  let(:short_text) { "<p>Foo <b>Bar</b> Baz</p>" }
+  let(:short_text) { "<p>Foo! <b>Bar</b> Baz</p>" }
   let(:long_text)  { "<p>Foo " +  ("<b>Bar Baz</b> " * 100) + "Quux</p>" }
   let(:list_text)  { "<p>Foo:</p><ul>" +  ("<li>Bar Baz</li>\n" * 100) + "</ul>" }
 
@@ -152,5 +152,9 @@ EOS
 EOS
     HTML_Truncator.truncate(txt, 10).should == txt.chomp
     HTML_Truncator.truncate(txt, 2).should == '<p>YouTube video…</p>'
+  end
+
+  it "should remove punctuation before the ellipsis" do
+    HTML_Truncator.truncate(short_text, 1).should == "<p>Foo…</p>"
   end
 end

@@ -28,12 +28,14 @@ The HTML_Truncator class has only one method, `truncate`, with 3 arguments:
 * the number of words to keep (real words, tags and attributes aren't count)
 * some options like the ellipsis (optional, '…' by default).
 
-And two attribute:
+And 3 attributes:
 
 * `ellipsable_tags`, which lists the tags that can contain the ellipsis
-  (by default: p ol ul li div header article nav section footer aside dd dt dl).
+  (by default: p ol ul li div header article nav section footer aside dd dt dl)
 * `self_closing_tags`, with the tags to keep when empty
-  (by default: br hr img param embed).
+  (by default: br hr img param embed)
+* `punctuation_chars`, with the punctation characters to remove before the
+  ellipsis (by default: , . : ; ! ?).
 
 
 Examples
@@ -74,6 +76,11 @@ The ellipsis is put at the right place, inside `<p>`, but not `<i>`:
 
     HTML_Truncator.truncate("<p><i>Lorem ipsum dolor sit amet.</i></p>", 3)
     # => "<p><i>Lorem ipsum dolor</i>…</p>"
+
+And the punctation just before the ellipsis is not kept:
+
+    HTML_Truncator.truncate("<p>Lorem ipsum: lorem ipsum dolor sit amet.</p>", 2)
+    # => "<p>Lorem ipsum…</p>"
 
 You can indicate that a tag can contain the ellipsis but adding it to the ellipsable_tags:
 

@@ -18,10 +18,11 @@ class HTML_Truncator
   end
 
   class <<self
-    attr_accessor :ellipsable_tags, :self_closing_tags
+    attr_accessor :ellipsable_tags, :self_closing_tags, :punctuation_chars
   end
   self.ellipsable_tags = Set.new(%w(p ol ul li div header article nav section footer aside dd dt dl))
   self.self_closing_tags = Set.new(%w(br hr img param embed))
+  self.punctuation_chars = %w(, . : ; ! ?)
 end
 
 class Nokogiri::HTML::DocumentFragment
@@ -50,7 +51,8 @@ class Nokogiri::XML::Node
       inner += txt
       next if remaining >= 0
       if ellipsable?
-        inner = inner.rstrip + opts[:ellipsis]
+        r = %r/[\s#{HTML_Truncator.punctuation_chars.join}]+$/
+        inner = inner.sub(r, '') + opts[:ellipsis]
         opts[:ellipsis] = ""
         opts[:was_truncated] = true
       end
