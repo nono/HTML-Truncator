@@ -10,17 +10,23 @@ How to use it
 
 It's very simple. Install it with rubygems:
 
-    gem install html_truncator
+```
+gem install html_truncator
+```
 
 Or, if you use bundler, add it to your `Gemfile`:
 
-    gem "html_truncator", "~>0.2"
+```ruby
+gem "html_truncator", "~>0.2"
+```
 
 Then you can use it in your code:
 
-    require "html_truncator"
-	HTML_Truncator.truncate("<p>Lorem ipsum dolor sit amet.</p>", 3)
-	# => "<p>Lorem ipsum dolor…</p>"
+```ruby
+require "html_truncator"
+HTML_Truncator.truncate("<p>Lorem ipsum dolor sit amet.</p>", 3)
+# => "<p>Lorem ipsum dolor…</p>"
+```
 
 The HTML_Truncator class has only one method, `truncate`, with 3 arguments:
 
@@ -43,55 +49,75 @@ Examples
 
 A simple example:
 
-	HTML_Truncator.truncate("<p>Lorem ipsum dolor sit amet.</p>", 3)
-	# => "<p>Lorem ipsum dolor…</p>"
+```ruby
+HTML_Truncator.truncate("<p>Lorem ipsum dolor sit amet.</p>", 3)
+# => "<p>Lorem ipsum dolor…</p>"
+```
 
 If the text is too short to be truncated, it won't be modified:
 
-    HTML_Truncator.truncate("<p>Lorem ipsum dolor sit amet.</p>", 5)
-    # => "<p>Lorem ipsum dolor sit amet.</p>"
+```ruby
+HTML_Truncator.truncate("<p>Lorem ipsum dolor sit amet.</p>", 5)
+# => "<p>Lorem ipsum dolor sit amet.</p>"
+```
 
 If you prefer, you can have the length in characters instead of words:
 
-    HTML_Truncator.truncate("<p>Lorem ipsum dolor sit amet.</p>", 12, :length_in_chars => true)
-    # => "<p>Lorem ipsum…</p>"
+```ruby
+HTML_Truncator.truncate("<p>Lorem ipsum dolor sit amet.</p>", 12, :length_in_chars => true)
+# => "<p>Lorem ipsum…</p>"
+```
 
 It doesn't cut inside a word but goes back to the immediately preceding word
 boundary:
 
-    HTML_Truncator.truncate("<p>Lorem ipsum dolor sit amet.</p>", 10, :length_in_chars => true)
-    # => "<p>Lorem…</p>"
+```ruby
+HTML_Truncator.truncate("<p>Lorem ipsum dolor sit amet.</p>", 10, :length_in_chars => true)
+# => "<p>Lorem…</p>"
+```
 
 You can customize the ellipsis:
 
-    HTML_Truncator.truncate("<p>Lorem ipsum dolor sit amet.</p>", 3, :ellipsis => " (truncated)")
-    # => "<p>Lorem ipsum dolor (truncated)</p>"
+```ruby
+HTML_Truncator.truncate("<p>Lorem ipsum dolor sit amet.</p>", 3, :ellipsis => " (truncated)")
+# => "<p>Lorem ipsum dolor (truncated)</p>"
+```
 
 And even have HTML in the ellipsis:
 
-    HTML_Truncator.truncate("<p>Lorem ipsum dolor sit amet.</p>", 3, :ellipsis => '<a href="/more-to-read">...</a>')
-    # => "<p>Lorem ipsum dolor<a href="/more-to-read">...</a></p>"
+```ruby
+HTML_Truncator.truncate("<p>Lorem ipsum dolor sit amet.</p>", 3, :ellipsis => '<a href="/more-to-read">...</a>')
+# => "<p>Lorem ipsum dolor<a href="/more-to-read">...</a></p>"
+```
 
 The ellipsis is put at the right place, inside `<p>`, but not `<i>`:
 
-    HTML_Truncator.truncate("<p><i>Lorem ipsum dolor sit amet.</i></p>", 3)
-    # => "<p><i>Lorem ipsum dolor</i>…</p>"
+```ruby
+HTML_Truncator.truncate("<p><i>Lorem ipsum dolor sit amet.</i></p>", 3)
+# => "<p><i>Lorem ipsum dolor</i>…</p>"
+```
 
 And the punctation just before the ellipsis is not kept:
 
-    HTML_Truncator.truncate("<p>Lorem ipsum: lorem ipsum dolor sit amet.</p>", 2)
-    # => "<p>Lorem ipsum…</p>"
+```ruby
+HTML_Truncator.truncate("<p>Lorem ipsum: lorem ipsum dolor sit amet.</p>", 2)
+# => "<p>Lorem ipsum…</p>"
+```
 
 You can indicate that a tag can contain the ellipsis but adding it to the ellipsable_tags:
 
-    HTML_Truncator.ellipsable_tags << "blockquote"
-    HTML_Truncator.truncate("<blockquote>Lorem ipsum dolor sit amet.</blockquote>", 3)
-    # => "<blockquote>Lorem ipsum dolor…</blockquote>"
+```ruby
+HTML_Truncator.ellipsable_tags << "blockquote"
+HTML_Truncator.truncate("<blockquote>Lorem ipsum dolor sit amet.</blockquote>", 3)
+# => "<blockquote>Lorem ipsum dolor…</blockquote>"
+```
 
 You can know if a string was truncated with the `html_truncated?` method:
 
-    HTML_Truncator.truncate("<p>Lorem ipsum dolor sit amet.</p>", 3).html_truncated?
-    # => true
+```ruby
+HTML_Truncator.truncate("<p>Lorem ipsum dolor sit amet.</p>", 3).html_truncated?
+# => true
+```
 
 
 Alternatives
