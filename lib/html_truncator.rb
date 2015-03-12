@@ -72,18 +72,25 @@ end
 
 class Nokogiri::XML::Text
   def truncate(max, opts)
-    words = to_xhtml.scan(/\s*\S+/)
     if opts[:length_in_chars]
-      count = to_xhtml.length
+      count = content.length
       return [to_xhtml, count, opts] if count <= max && max > 0
+      words = content.scan(/\s*\S+/)
       if words.size > 1
         words.inject('') do |string, word|
-          return [string, count, opts] if string.length + word.length > max
+          if string.length + word.length > max
+            txt = dup
+            txt.content = string
+            return [txt.to_xhtml, count, opts]
+          end
           string + word
         end
       end
-      [content.slice(0, max), count, opts]
+      txt = dup
+      txt.content = content.slice(0, max)
+      [txt.to_xhtml, count, opts]
     else
+      words = to_xhtml.scan(/\s*\S+/)
       count = words.length
       return [to_xhtml, count, opts] if count <= max && max > 0
       [words.slice(0, max).join, count, opts]

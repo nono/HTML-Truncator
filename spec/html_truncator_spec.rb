@@ -163,4 +163,12 @@ EOS
   it "should remove punctuation before the ellipsis" do
     HTML_Truncator.truncate(short_text, 1).should == "<p>Foo…</p>"
   end
+
+  it "should behave correctly with html entities" do
+    HTML_Truncator.truncate("<br>&lt;br&gt;123456789012", 9, length_in_chars: true).should == "<br>&lt;br&gt;12345…"
+    HTML_Truncator.truncate("<p>&lt;br&gt; 1</p>2 3456789", 9, length_in_chars: true).should == "<p>&lt;br&gt; 1</p>2…"
+    HTML_Truncator.truncate("&lt;br&gt;", 10, length_in_chars: true).should == "&lt;br&gt;"
+    HTML_Truncator.truncate("<br>12345678901", 10, length_in_chars: true).should == "<br>1234567890…"
+    HTML_Truncator.truncate("<br>&lt;br&gt; 1 2 3", 2).should == "<br>&lt;br&gt; 1…"
+  end
 end
