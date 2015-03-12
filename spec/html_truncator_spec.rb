@@ -3,6 +3,12 @@ path = File.expand_path(File.dirname(__FILE__) + "/../lib/")
 $LOAD_PATH.unshift(path) unless $LOAD_PATH.include?(path)
 require "html_truncator"
 
+RSpec.configure do |config|
+  config.expect_with(:rspec) { |c| c.syntax = :should }
+  config.filter_run focus: true
+  config.run_all_when_everything_filtered = true
+end
+
 
 describe HTML_Truncator do
   let(:short_text) { "<p>Foo! <b>Bar</b> Baz</p>" }
@@ -15,9 +21,9 @@ describe HTML_Truncator do
 
   it "should truncate long text to the given number of words" do
     words = HTML_Truncator.truncate(long_text, 10, :ellipsis => "").gsub(/<[^>]*>/, ' ').split
-    words.should have(10).items
+    words.count.should eq(10)
     words = HTML_Truncator.truncate(long_text, 11, :ellipsis => "").gsub(/<[^>]*>/, '').split
-    words.should have(11).items
+    words.count.should eq(11)
   end
 
   it "should not contains empty DOM nodes" do
@@ -150,7 +156,7 @@ EOS
 <param name="allowscriptaccess" value="always">
 <embed src="//www.youtube.com/v/txqiwrbYGrs?version=3&amp;hl=en_US" type="application/x-shockwave-flash" width="420" height="315" allowscriptaccess="always" allowfullscreen="true"></embed></object>
 EOS
-    HTML_Truncator.truncate(txt, 10).should == txt.chomp
+    HTML_Truncator.truncate(txt, 10).should == txt
     HTML_Truncator.truncate(txt, 2).should == '<p>YouTube video…</p>'
   end
 
