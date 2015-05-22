@@ -119,6 +119,13 @@ HTML_Truncator.truncate("<p>Lorem ipsum dolor sit amet.</p>", 3).html_truncated?
 # => true
 ```
 
+You can ignore images in the text by overriding the `self_closing_tags` attribute:
+
+```ruby
+HTML_Truncator.self_closing_tags = %w(br hr param embed)
+HTML_Truncator.truncate("<p>Lorem ipsum <img src='...'>dolor sit amet.</p>", 3)
+# => "<p>Lorem ipsum dolor…</p>"
+```
 
 Alternatives
 ------------
