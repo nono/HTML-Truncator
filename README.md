@@ -127,6 +127,16 @@ HTML_Truncator.truncate("<p>Lorem ipsum <img src='...'>dolor sit amet.</p>", 3)
 # => "<p>Lorem ipsum dolor…</p>"
 ```
 
+If you already have parsed an HTML document with Nokogiri, you can use it
+directly to truncate:
+
+```ruby
+document = Nokogiri::HTML::DocumentFragment.parse(text)
+# Doing something with this document
+options = HTML_Truncator::DEFAULT_OPTIONS.merge(length_in_char: true)
+document.truncate(12, options)
+```
+
 Alternatives
 ------------
 
