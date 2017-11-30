@@ -75,7 +75,7 @@ class Nokogiri::XML::Text
     if opts[:length_in_chars]
       count = content.length
       return [to_xhtml, count, opts] if count <= max && max > 0
-      words = content.scan(/\s*\S+/)
+      words = content.scan(/[[:space:]]*[[:graph:]]+/)
       if words.size > 1
         words.inject('') do |string, word|
           if string.length + word.length > max
@@ -90,7 +90,7 @@ class Nokogiri::XML::Text
       txt.content = content.slice(0, max)
       [txt.to_xhtml, count, opts]
     else
-      words = to_xhtml.scan(/\s*\S+/)
+      words = to_xhtml.scan(/[[:space:]]*[[:graph:]]+/)
       count = words.length
       return [to_xhtml, count, opts] if count <= max && max > 0
       [words.slice(0, max).join, count, opts]
