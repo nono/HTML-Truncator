@@ -1,4 +1,4 @@
-HTML Truncator
+HTML Truncator - An amazing project
 ==============
 
 Wants to truncate an HTML string properly? This gem is for you.
