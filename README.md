@@ -14,7 +14,7 @@ It's very simple. Install it with rubygems:
 gem install html_truncator
 ```
 
-Or, if you use bundler, add it to your `Gemfile:
+Or, if you use bundler, add it to your `Gemfile`:
 
 ```ruby
 gem "html_truncator", "~>0.2"
