@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  RUBYOPT: "--enable-frozen-string-literal --debug-frozen-string-literal"
+
 jobs:
   test:
 
