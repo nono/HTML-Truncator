@@ -51,7 +51,7 @@ class Nokogiri::XML::Node
       inner += txt
       next if remaining >= 0
       if ellipsable?
-        r = %r/[\s#{HTML_Truncator.punctuation_chars.join}]+$/
+        r = %r/[\s#{HTML_Truncator.punctuation_chars.join}]+\Z/
         inner = inner.sub(r, '') + opts[:ellipsis]
         opts[:ellipsis] = ""
         opts[:was_truncated] = true

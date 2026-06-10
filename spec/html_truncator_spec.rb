@@ -14,6 +14,7 @@ describe HTML_Truncator do
   let(:short_text) { "<p>Foo! <b>Bar</b> Baz</p>" }
   let(:long_text)  { "<p>Foo " +  ("<b>Bar Baz</b> " * 100) + "Quux</p>" }
   let(:list_text)  { "<p>Foo:</p><ul>" +  ("<li>Bar Baz</li>\n" * 100) + "</ul>" }
+  let(:text_with_new_lines) { "<p>Foo.\n Bar.\n Baz.</p>" }
 
   it "should not modify short text" do
     HTML_Truncator.truncate(short_text, 10).should == short_text
@@ -162,6 +163,7 @@ EOS
 
   it "should remove punctuation before the ellipsis" do
     HTML_Truncator.truncate(short_text, 1).should == "<p>Foo…</p>"
+    HTML_Truncator.truncate(text_with_new_lines, 12, :length_in_chars => true).should == "<p>Foo.\n Bar…</p>"
   end
 
   it "should behave correctly with html entities" do
