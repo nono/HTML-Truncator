@@ -33,10 +33,10 @@ end
 
 class Nokogiri::XML::Node
   def truncate(max, opts)
-    return ["", 1, opts] if max == 0 && !ellipsable?
+    return [+"", 1, opts] if max == 0 && !ellipsable?
     inner, remaining, opts = inner_truncate(max, opts)
     if inner.empty?
-      return [self_closing? ? to_html : "", max - remaining, opts]
+      return [self_closing? ? to_html : +"", max - remaining, opts]
     end
     children.remove
     add_child Nokogiri::HTML::DocumentFragment.parse(inner)
@@ -44,7 +44,7 @@ class Nokogiri::XML::Node
   end
 
   def inner_truncate(max, opts)
-    inner, remaining = "", max
+    inner, remaining = +"", max
     self.children.each do |node|
       txt, nb, opts = node.truncate(remaining, opts)
       remaining -= nb

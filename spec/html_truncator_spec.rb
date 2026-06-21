@@ -16,6 +16,10 @@ describe HTML_Truncator do
   let(:list_text)  { "<p>Foo:</p><ul>" +  ("<li>Bar Baz</li>\n" * 100) + "</ul>" }
   let(:text_with_new_lines) { "<p>Foo.\n Bar.\n Baz.</p>" }
 
+  it "should not modify empty text" do
+    HTML_Truncator.truncate("", 10).should == ""
+  end
+
   it "should not modify short text" do
     HTML_Truncator.truncate(short_text, 10).should == short_text
   end
